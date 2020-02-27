@@ -19,10 +19,12 @@ UI Designer files are located in Screens/Interfaces
   mainWindow.ui     - Jose
   
   
+  
 IMPORTANT:
   Every screen's UI is to be developed in a .ui designer file.
   Python code can be generated from these files using the command:
       pyside2-uic sampleName.ui > ui_sampleName.py
+  
   The generated code is to get called from a BHSampleNameDialog class inside a corresponding .py file
   
 Tip:
