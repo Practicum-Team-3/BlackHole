@@ -7,10 +7,15 @@ UI Designer files are located in Screens/Interfaces
   Current UI Designer files and their assignments are as follows:
   
   welcomeScreen.ui  - Freddye
+  
   newScenario.ui    - Laura
+  
   machineList.ui    - Daniel
+  
   machineEdit.ui    - Manali
+  
   machineSettings.ui - Aaron
+  
   mainWindow.ui     - Jose
   
   
