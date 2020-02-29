@@ -215,6 +215,7 @@ class MachineListDialog(QDialog):
         self.victimsScroll.setWidget(self.getQuickViewList(self.JSON_Scenario["machines"]))
 
 
+
 if __name__ == "__main__":
 
     sample_scenario = '''{
