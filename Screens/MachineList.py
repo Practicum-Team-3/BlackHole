@@ -1,9 +1,12 @@
-import sys
+import sys, os
 from PySide2.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QScrollArea, 
 QFormLayout, QGroupBox, QLabel, QPushButton, QHBoxLayout, QLayoutItem, QAction, QDialog)
-from PySide2.QtCore import (QFile, QDate)
+from PySide2.QtCore import (QFile, QDate, Signal, Slot, QObject)
 from PySide2.QtGui import (QPixmap, QFont)
 from Interfaces.ui_machineList import Ui_MachineList
+from DataHandler.BHScenario import BHScenario #getPOVMachines()  ,  getVictimMachines()
+from DataHandler.BHMachine import BHMachine
+#from MachineEdit import MachineEdit
 import json
 
 logoPaths = {"windows":"Media\OSLogos\windows-logo.png", "debian":"Media\OSLogos\debian-logo.png"}
@@ -35,23 +38,25 @@ genericMachine = {
 
 #VM Quick View Widget
 class QuickView(QWidget):
-    def __init__(self, machineJSON, index):
+    def __init__(self, BHMachine, indexOnList):
         super(QuickView, self).__init__()
         self.setFixedSize(300, 150)
-        self.machineIndex = index
-
+        self.machine = BHMachine
+        self.listIndex = indexOnList
         self.mainHorizontalLayout = QHBoxLayout()
         self.VMInfoAndOptionsVerticalLayout = QVBoxLayout()
 
-        self.setLogo(machineJSON["os"])
+        self.setLogo(BHMachine.getOS())
 
         #Decide which values will be displayed
-        fieldsList = ["name", "os"]
-        self.setFields(machineJSON, fieldsList)
+        self.setFields(BHMachine.getFieldsToShow())
+
+        self.signalObject = QObject()
+        self.signalObject.editButtonClickedSignal = Signal(BHMachine)
+        self.signalObject.deleteButtonClickedSignal = Signal(bool, int)
 
         #set buttons
         self.setButtons()
-
 
         #add to main layout
         self.mainHorizontalLayout.addLayout(self.VMInfoAndOptionsVerticalLayout)
@@ -77,12 +82,11 @@ class QuickView(QWidget):
         editAndDeleteButtonsHorizLayout = QHBoxLayout()
         editVMButton = QPushButton("Edit")
         editVMButton.setMaximumWidth(50)
-        editVMButton.clicked.connect(self.editClicked)
-
+        editVMButton.clicked.connect(self.editVMButtonClicked)#(self.machine.isVictim(), self.listIndex)
 
         deleteVMButton = QPushButton("Delete")
         deleteVMButton.setMaximumWidth(50)
-        deleteVMButton.clicked.connect(self.deleteClicked)
+        deleteVMButton.clicked.connect(self.deleteVMButtonClicked)#(self.machine.isVictim(), self.listIndex)
 
         editAndDeleteButtonsHorizLayout.addWidget(editVMButton)
         editAndDeleteButtonsHorizLayout.addWidget(deleteVMButton)
@@ -91,86 +95,82 @@ class QuickView(QWidget):
         self.VMInfoAndOptionsVerticalLayout.addLayout(editAndDeleteButtonsHorizLayout)
 
 
-    def setFields(self, machineJSON, fieldsList):
+    def setFields(self, fieldsList):
         #Create VM info
         VMFields = QFormLayout()
-        for key in fieldsList:
+        for key, val in fieldsList.items():
             label = QLabel(f"{str(key).capitalize()}:")
             font = QFont()
             font.setBold(True)
             font.setPointSize(8)
             label.setFont(font)
-            value = QLabel(str(machineJSON[key]))
+            value = QLabel(str(val))
 
             VMFields.addRow(label, value)
 
-        self.VMInfoAndOptionsVerticalLayout.addLayout(VMFields) 
+        self.VMInfoAndOptionsVerticalLayout.addLayout(VMFields)
 
-    def editClicked(self):
-        print("edit clicked") 
 
-    def deleteClicked(self):
-        print("delete clicked") 
+    def editVMButtonClicked(self):
+        self.signalObject.emit(self.machine)
+
+    def deleteVMButtonClicked(self):
+        self.signalObject.emit(self.machine.isVictim(), self.machine.getMachineID())
 
 
 class MachineListDialog(QDialog):
-    def __init__(self, JSON_Scenario):
+    def __init__(self, BHScenario):
         super(MachineListDialog, self).__init__()
         self.ui = Ui_MachineList()
         self.ui.setupUi(self)
-        self.JSON_Scenario = json.loads(JSON_Scenario)
+        self.scenario = BHScenario
+        self.placeholderMachine = None
 
         #Get JSON from String
         self.setLabels()
 
         #setup QuickViews
+        self.updatePOVs(self.scenario)
+        self.updateVictims(self.scenario)
+
+        #create buttons
+        createVMButton = QPushButton("Create VM")
+        #connect buttons to actions
+        createVMButton.clicked.connect(self.onCreateVMButtonClicked)
+        #add buttons to layout
+        self.ui.horizontalLayout_3.addWidget(createVMButton)
+
+        #set up save and cancel buttons
+        # self.ui.buttonBox.accepted.connect(self.onSaveClicked)
+        # self.ui.buttonBox.rejected.connect(self.onCancelClicked)
+
+    def updatePOVs(self, BHScenario):
         self.attackersLayout = QVBoxLayout()
         self.attackersScroll = self.getScrollArea()
-        self.attackersScroll.setWidget(self.getQuickViewList(self.JSON_Scenario["machines"]))
+        self.attackersScroll.setWidget(self.getQuickViewList(BHScenario.getPOVMachines()))
         self.attackersLayout.addWidget(self.attackersScroll)
+        self.ui.horizontalLayout.addLayout(self.attackersLayout)
 
 
+    def updateVictims(self, BHScenario):
         self.victimsLayout = QVBoxLayout()
         self.victimsScroll = self.getScrollArea()
-        self.victimsScroll.setWidget(self.getQuickViewList(self.JSON_Scenario["machines"]))
+        self.victimsScroll.setWidget(self.getQuickViewList(BHScenario.getVictimMachines()))
         self.victimsLayout.addWidget(self.victimsScroll)
-
-        self.ui.horizontalLayout.addLayout(self.attackersLayout)
         self.ui.horizontalLayout.addLayout(self.victimsLayout)
-
-        #setup buttons
-        self.setButtons()
-
-        # #set up save and cancel buttons
-        self.ui.buttonBox.accepted.connect(self.onSaveClicked)
-        self.ui.buttonBox.rejected.connect(self.onCancelClicked)
-
-    
-    def onSaveClicked(self):
-        print("returned modified JSON")
-
-    def onCancelClicked(self):
-        print("return original JSON")
-
 
     def setLabels(self):
         PoCLabel = QLabel("PoCs")
         victimLabel = QLabel("Victims")
-
         font = QFont()
         font.setBold(True)
         font.setPointSize(12)
-
         PoCLabel.setFont(font)
-
         victimLabel.setFont(font)
-
         self.ui.horizontalLayout_2.addWidget(PoCLabel)
         self.ui.horizontalLayout_2.addWidget(victimLabel)
 
-
     def getScrollArea(self):
-
         #setup PoC quickviews
         scrollArea = QScrollArea()
         scrollArea.setWidgetResizable(True)
@@ -178,41 +178,65 @@ class MachineListDialog(QDialog):
         return scrollArea
 
 
-    def getQuickViewList(self, machines):
+    def getQuickViewList(self, BHMachinesList):
         verticalLayout = QVBoxLayout()
         groupBox = QGroupBox()
-
-        for i in range(len(machines) - 1, -1, -1):
-            verticalLayout.addWidget(QuickView(machines[i], i))#TODO pass callbacks 
-
+        for i in range(len(BHMachinesList) - 1, -1, -1):
+            quickView = QuickView(BHMachinesList[i], i)
+            verticalLayout.addWidget(quickView)
         groupBox.setLayout(verticalLayout)
         return groupBox
 
 
-    def setButtons(self):
-        
-        #create buttons
-        addPOCButton = QPushButton("Add PoC VM")
-        addVictimButton = QPushButton("Add Victim VM")
-
-        #connect buttons to actions
-        addPOCButton.clicked.connect(self.onAddPOC)
-        addVictimButton.clicked.connect(self.onAddVictim)
-
-        #add buttons to layout
-        self.ui.horizontalLayout_3.addWidget(addPOCButton)
-        self.ui.horizontalLayout_3.addWidget(addVictimButton)
+    def onCreateVMButtonClicked(self):
+        self.placeholderMachine = BHMachine()
+        #TODO
+        # machineEditWindow = MachineEdit(self.placeholderMachine)
+        # machineEditWindow.onOKAction.connect(self.createVM)
+        print(f"create machine clicked")
 
 
-    def onAddPOC(self):
-        print("add POC clicked!!!")
-        self.JSON_Scenario["machines"].append(genericMachine)
-        self.attackersScroll.setWidget(self.getQuickViewList(self.JSON_Scenario["machines"]))
+    @Slot(bool, int)
+    def onDeleteVM(self, isVictim, machineID):
+        if isVictim:
+            self.scenario.deleteVictimMachine(machineID)
+            self.updateVictims(self.scenario)
+        else:
+            self.scenario.deletePOVMachine(machineID)
+            self.updatePOVs(self.scenario)
+        print(f"delete clicked from {isVictim} machine {machineID}")
+    
+    @Slot(BHMachine)
+    def onEditVMButtonClicked(self, BHMachine):
+        self.placeholderMachine = BHMachine
+        #TODO
+        # machineEditWindow = MachineEdit(self.placeholderMachine)
+        # machineEditWindow.onOKAction.connect(self.replaceMachine)
+        print(f"edit clicked from machine {BHMachine.getMachineID()}")
 
-    def onAddVictim(self):
-        print("add victim clicked!!!")
-        self.JSON_Scenario["machines"].append(genericMachine)
-        self.victimsScroll.setWidget(self.getQuickViewList(self.JSON_Scenario["machines"]))
+    @Slot()
+    def replaceMachine(self):
+        self.scenario.replaceMachine(self.placeholderMachine.getMachineID(), self.placeholderMachine, self.placeholderMachine.isVictim())
+        if self.placeholderMachine.isVictim():
+            self.updateVictims(self.scenario)
+        else:
+            self.updatePOVs(self.scenario)
+
+
+    @Slot()
+    def createVM(self):
+        self.scenario.addMachine(self.placeholderMachine)
+        if self.placeholderMachine.isVictim():
+            self.updateVictims(self.scenario)
+        else:
+            self.updatePOVs(self.scenario)
+
+
+    def onSaveClicked(self):
+        print("returned modified JSON")
+
+    def onCancelClicked(self):
+        print("return original JSON")
 
 
 
@@ -220,7 +244,7 @@ if __name__ == "__main__":
 
     sample_scenario = '''{
     "scenario_name" : "name", 
-    "id" : 123456789, 
+    "id" : 123, 
     "creation_date" : "string", 
     "last_accessed" : "string", 
     "exploit_info": {
@@ -236,52 +260,22 @@ if __name__ == "__main__":
         }, 
     "machines": [
         {
-        "os": "windows",
-        "name": "attacker",
-        "shared_folders": [
-            "./attackerfiles",
-            "/sharedfolder"
-        ],
-        "network_settings": {
-            "ip_address": "192.168.50.5",
-            "network_type" : "type", 
-            "network_name" : "Name", 
-            "auto_config" : "True"
-        },
-        "provisions": [
-            {
-            "name": "installE0",
-            "commands": [
-            [
-                "shell",
-                "./../../sharedfolder/e0.sh"
-            ]
-            ]
-        }]
+            "os": "windows",
+            "name": "attacker1",
+            "id": 123,
+            "type": "pov",
+            "shared_folders": [],
+            "network_settings": [],
+            "provisions": []
         },
         {
-        "os": "debian",
-        "name": "victim",
-        "shared_folders": [
-            "./attackerfiles",
-            "/sharedfolder"
-        ],
-        "network_settings": {
-            "ip_address": "192.168.50.5",
-            "network_type" : "type", 
-            "network_name" : "Name", 
-            "auto_config" : "True"
-        },
-        "provisions": [
-            {
-            "name": "installE0",
-            "commands": [
-            [
-                "shell",
-                "./../../sharedfolder/e0.sh"
-            ]
-            ]
-        }]
+            "os": "debian",
+            "name": "victim1",
+            "id": 124,
+            "type": "victim",
+            "shared_folders": [],
+            "network_settings": [],
+            "provisions": []
         }
     ],
     "network_settings" : {
@@ -291,7 +285,11 @@ if __name__ == "__main__":
         }
     }'''
 
+    testScenario = BHScenario()
+    JSONScenario = json.loads(sample_scenario)
+    testScenario.fromJSON(JSONScenario)
+    
     app = QApplication(sys.argv)
-    window = MachineListDialog(sample_scenario)
+    window = MachineListDialog(testScenario)
     window.show()
     sys.exit(app.exec_())
