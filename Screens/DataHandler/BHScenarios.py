@@ -5,6 +5,7 @@ class BHScenarios(object):
     def __init__(self):
         self.scenarios = {"key":"scenario"}
 
+
         self.testScenario = '''{
     "scenario_name" : "name", 
     "id" : 123, 

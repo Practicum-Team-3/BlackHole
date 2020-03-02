@@ -8,6 +8,7 @@ from Screens.DataHandler.BHScenario import BHScenario
 from Screens.DataHandler.BHMachine import BHMachine
 from BHMainWindow import BHMainWindow
 from Screens.MachineList import MachineListDialog
+from Screens.BHWelcomeScreen import BHWelcomeScreen
 from Screens.BHNewScenario import BHNewScenario
 # BHDelegate
 # Responsible for main control logic
@@ -21,7 +22,7 @@ class BHDelegate(QMainWindow):
 
         # Instantiate main window
         self.window = BHMainWindow(self.testScenarios)
-        self.welcomeWindow = None
+        self.welcomeScreen = None
         self.newScenarioWindow = None
         self.machineListWindow = None
         #self.createEditVMWindow = None
@@ -34,15 +35,21 @@ class BHDelegate(QMainWindow):
         # self.welcomeWindow.createScenarioAction.connect(self.createNewScenario)
         # self.welcomeWindow.show()
 
-        self.createNewScenario()
+        self.welcomeScreen = BHWelcomeScreen()
+        self.welcomeScreen.newScenarioRequested.connect(self.createNewScenario)
+        self.welcomeScreen.show()
 
 
 
 #CALLBACKS
     @Slot()
     def createNewScenario(self):
+
+        self.welcomeScreen.hide()
+
         # TODO: Change to a new instance of BHScenarios
         self.newScenario = self.testScenarios.getScenario()
+
 
         # move to function called when 
         # self.BHScenarios.addScenario(newScenarioObject)
@@ -68,6 +75,8 @@ class BHDelegate(QMainWindow):
 
     @Slot()
     def showMainWindow(self):
+
+        self.machineListWindow.hide()
 
         self.window.update()
         self.window.show()
