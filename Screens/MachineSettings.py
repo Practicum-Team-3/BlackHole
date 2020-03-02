@@ -2,8 +2,8 @@ import sys
 import json
 from PySide2.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide2.QtCore import QFile
-from Interfaces.ui_machineSettings import Ui_MachineSettings
-from BHMachine import BHMachine
+from Screens.Interfaces.ui_machineSettings import Ui_MachineSettings
+from Screens.DataHandler.BHMachine import BHMachine
 
 # will take a BHMachine instance
 class MachineSettings(QDialog):

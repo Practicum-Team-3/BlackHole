@@ -3,9 +3,9 @@ from PySide2.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
 QFormLayout, QGroupBox, QLabel, QPushButton, QHBoxLayout, QLayoutItem, QAction, QDialog, QLayout)
 from PySide2.QtCore import (QFile, QDate, Slot, QObject, Signal)
 from PySide2.QtGui import (QPixmap, QFont)
-from Interfaces.ui_machineList import Ui_MachineList
-from DataHandler.BHScenario import BHScenario #getPOVMachines()  ,  getVictimMachines()
-from DataHandler.BHMachine import BHMachine
+from Screens.Interfaces.ui_machineList import Ui_MachineList
+from Screens.DataHandler.BHScenario import BHScenario #getPOVMachines()  ,  getVictimMachines()
+from Screens.DataHandler.BHMachine import BHMachine
 
 from Screens.MachineSettings import MachineSettings
 from Screens.BHMachineEditDialog import BHMachineEditDialog
@@ -347,108 +347,7 @@ class MachineListDialog(QDialog):
 #             "download_link": "link", 
 #             "type": "type"
 #         }, 
-#     "machines": [
-#             {
-#             "os": "windows",
-#             "name": "attacker1",
-#             "id": 122,
-#             "type": "pov",
-#             "shared_folders": [],
-#             "network_settings": [],
-#             "provisions": [],
-#             "baseMemory": 5,
-#             "bootOrder_floppy": "False",
-#             "bootOrder_optical": "False",
-#             "bootOrder_hardDisk": "False",
-#             "bootOrder_network": "False",
-#             "chipset": "PIIX3",
-#             "pointingDevice": "PS/2 Mouse",
-#             "extFeat_enableIO": "False",
-#             "extFeat_enableEFI": "False",
-#             "extFeat_hwClockUTCtime": "False",
-#             "processors": 3,
-#             "exeCap": 99,
-#             "extFeat_EnablePAE_NX": "False",
-#             "paravirtInterface": "Default",
-#             "hdVirt_enableVTx": "False",
-#             "hdVirt_enableNestedPaging": "False"
-#         },
-# {
-#             "os": "windows",
-#             "name": "victim1",
-#             "id": 123,
-#             "type": "victim",
-#             "shared_folders": [],
-#             "network_settings": [],
-#             "provisions": [],
-#             "baseMemory": 5,
-#             "bootOrder_floppy": "False",
-#             "bootOrder_optical": "False",
-#             "bootOrder_hardDisk": "False",
-#             "bootOrder_network": "False",
-#             "chipset": "PIIX3",
-#             "pointingDevice": "PS/2 Mouse",
-#             "extFeat_enableIO": "False",
-#             "extFeat_enableEFI": "False",
-#             "extFeat_hwClockUTCtime": "False",
-#             "processors": 3,
-#             "exeCap": 99,
-#             "extFeat_EnablePAE_NX": "False",
-#             "paravirtInterface": "Default",
-#             "hdVirt_enableVTx": "False",
-#             "hdVirt_enableNestedPaging": "False"
-#         },
-# {
-#             "os": "windows",
-#             "name": "victim2",
-#             "id": 124,
-#             "type": "victim",
-#             "shared_folders": [],
-#             "network_settings": [],
-#             "provisions": [],
-#             "baseMemory": 5,
-#             "bootOrder_floppy": "False",
-#             "bootOrder_optical": "False",
-#             "bootOrder_hardDisk": "False",
-#             "bootOrder_network": "False",
-#             "chipset": "PIIX3",
-#             "pointingDevice": "PS/2 Mouse",
-#             "extFeat_enableIO": "False",
-#             "extFeat_enableEFI": "False",
-#             "extFeat_hwClockUTCtime": "False",
-#             "processors": 3,
-#             "exeCap": 99,
-#             "extFeat_EnablePAE_NX": "False",
-#             "paravirtInterface": "Default",
-#             "hdVirt_enableVTx": "False",
-#             "hdVirt_enableNestedPaging": "False"
-#         },
-# {
-#             "os": "windows",
-#             "name": "victim3",
-#             "id": 125,
-#             "type": "victim",
-#             "shared_folders": [],
-#             "network_settings": [],
-#             "provisions": [],
-#             "baseMemory": 5,
-#             "bootOrder_floppy": "False",
-#             "bootOrder_optical": "False",
-#             "bootOrder_hardDisk": "False",
-#             "bootOrder_network": "False",
-#             "chipset": "PIIX3",
-#             "pointingDevice": "PS/2 Mouse",
-#             "extFeat_enableIO": "False",
-#             "extFeat_enableEFI": "False",
-#             "extFeat_hwClockUTCtime": "False",
-#             "processors": 3,
-#             "exeCap": 99,
-#             "extFeat_EnablePAE_NX": "False",
-#             "paravirtInterface": "Default",
-#             "hdVirt_enableVTx": "False",
-#             "hdVirt_enableNestedPaging": "False"
-#         }
-#     ],
+#     "machines": [],
 #     "network_settings" : {
 #             "network_type" : "type", 
 #             "network_name" : "Name", 

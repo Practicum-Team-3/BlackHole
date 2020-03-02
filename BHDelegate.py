@@ -14,14 +14,13 @@ from Screens.BHNewScenario import BHNewScenario
 class BHDelegate(QMainWindow):
     def __init__(self):
         super(BHDelegate, self).__init__()
-        # Main setup
-        app = QApplication()
+        # Main setu
 
         # 1 
         self.testScenarios = BHScenarios()
 
         # Instantiate main window
-        self.window = BHMainWindow(self.testScenarios)
+        # self.window = BHMainWindow(self.testScenarios)
         self.welcomeWindow = None
         self.newScenarioWindow = None
         self.machineListWindow = None
@@ -75,12 +74,8 @@ class BHDelegate(QMainWindow):
 
 
 if __name__ == "__main__":
+    app = QApplication()
     BHDelegate = BHDelegate()
-        
-
-
-
-
 
     # Execute Qt
     sys.exit(app.exec_())

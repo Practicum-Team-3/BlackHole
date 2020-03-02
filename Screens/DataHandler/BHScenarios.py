@@ -1,4 +1,5 @@
 from Screens.DataHandler.BHScenario import BHScenario
+import json
 
 class BHScenarios(object):
     def __init__(self):
@@ -128,11 +129,36 @@ class BHScenarios(object):
             "auto_config" : "True"
         }
     }'''
+        self.miniScenario = '''{
+    "scenario_name" : "name", 
+    "id" : 123, 
+    "creation_date" : "string", 
+    "last_accessed" : "string", 
+    "exploit_info": {
+            "name": "Name", 
+            "download_link": "link", 
+            "type": "type"
+        }, 
+    "vulnerability_info": {
+            "name": "Name", 
+            "cve_link": "url", 
+            "download_link": "link", 
+            "type": "type"
+        }, 
+    "machines": [],
+    "network_settings" : {
+            "network_type" : "type", 
+            "network_name" : "Name", 
+            "auto_config" : "True"
+        }
+    }'''
+
     
     def addScenario(self, scenario):
         pass
 
     def getScenario(self):
         testScenarioObject = BHScenario()
-        testScenarioObject.fromJSON(self.testScenario)
+        scenarioJSONObject = json.loads(self.testScenario)
+        testScenarioObject.fromJSON(scenarioJSONObject)
         return testScenarioObject
