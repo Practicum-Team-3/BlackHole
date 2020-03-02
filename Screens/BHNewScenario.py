@@ -20,23 +20,24 @@ class BHNewScenario(QDialog):
     vulProgDeleted = Signal()
 
     def __init__(self, scenario):
-       super(BHNewScenario, self).__init__()
+        super(BHNewScenario, self).__init__()
 
-       self.ui = Ui_NewScenario()
-       self.ui.setupUi(self)
-       # self.ui.openScreenButton.clicked.connect(self.openSampleScreen)
+        self.scenario = scenario
+        self.ui = Ui_NewScenario()
+        self.ui.setupUi(self)
+        # self.ui.openScreenButton.clicked.connect(self.openSampleScreen)
 
-       # == Fill in the fields with the values of the BHScenario passed (scenario) ==
-       self.ui.scenarioName.setPlainText("SampleScenario")
+        # == Fill in the fields with the values of the BHScenario passed (scenario) ==
+        self.ui.scenarioName.setPlainText("SampleScenario")
 
-       # == Connect the button actions to listeners ==
-       self.ui.buttons.accepted.connect(self.acceptButtonPressed)
-       self.ui.buttons.rejected.connect(self.rejectButtonPressed)
-       #self.ui.buttons.accepted.connect(self.savedButtonPressed)
-       #self.ui.addExploit.accepted.connect(self.addExploitButtonPressed)
-       #self.ui.addVulProg.accepted.connect(self.addVulProgButtonPressed)
-       #self.ui.delExploit.accepted.connect(self.delExploitButtonPressed)
-       #self.ui.delVulProg.accepted.connect(self.delVulProgButtonPressed)
+        # == Connect the button actions to listeners ==
+        self.ui.buttons.accepted.connect(self.acceptButtonPressed)
+        self.ui.buttons.rejected.connect(self.rejectButtonPressed)
+        #self.ui.buttons.accepted.connect(self.savedButtonPressed)
+        #self.ui.addExploit.accepted.connect(self.addExploitButtonPressed)
+        #self.ui.addVulProg.accepted.connect(self.addVulProgButtonPressed)
+        #self.ui.delExploit.accepted.connect(self.delExploitButtonPressed)
+        #self.ui.delVulProg.accepted.connect(self.delVulProgButtonPressed)
 
 
     @Slot()

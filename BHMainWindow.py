@@ -27,14 +27,16 @@ class BHMainWindow(QMainWindow):
 
         # Get a scenario from scenarios
         # TODO: update getScenario function to the official implementation and traverse through available scenarios
-        singleScenario = scenarios.getScenarioById()
+        singleScenario = scenarios.getScenario()
 
         # Fill a default tab view with the newtork panel and pass a single scenario for handling
         self.ui.tabWidget.setTabText(self.ui.tabWidget.indexOf(self.ui.defaultTab), singleScenario.scenario_name)
         self.defaultNetworkPanel = BHNetworkPanel(singleScenario)
         self.ui.gridLayoutTab.addWidget(self.defaultNetworkPanel, 0, 0, 1, 1)
 
-
+    # Call to notify of external changes to data
+    def update(self):
+        pass
 
 # === Single Tab (the network panel) ===
 # Handles a single BHScenario instance

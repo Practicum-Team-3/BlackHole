@@ -6,6 +6,10 @@ from PySide2.QtGui import (QPixmap, QFont)
 from Interfaces.ui_machineList import Ui_MachineList
 from DataHandler.BHScenario import BHScenario #getPOVMachines()  ,  getVictimMachines()
 from DataHandler.BHMachine import BHMachine
+
+from Screens.MachineSettings import MachineSettings
+from Screens.BHMachineEditDialog import BHMachineEditDialog
+
 #from MachineEdit import MachineEdit
 import json
 
@@ -159,8 +163,8 @@ class MachineListDialog(QDialog):
         self.ui.horizontalLayout_3.addWidget(createVMButton)
 
         #set save and cancel buttons
-        self.ui.buttonBox.accepted.connect(self.onSaveClicked)
-        self.ui.buttonBox.rejected.connect(self.onCancelClicked)
+        # self.ui.buttonBox.accepted.connect(self.onSaveClicked)
+        # self.ui.buttonBox.rejected.connect(self.onCancelClicked)
 
     def updatePOVs(self):
         self.attackersScroll.setWidget(self.getQuickViewList(self.scenario.getPOVMachines()))
@@ -204,9 +208,9 @@ class MachineListDialog(QDialog):
     def onCreateVMButtonClicked(self):
         self.placeholderMachine = BHMachine()
         #TODO
-        # machineEditWindow = MachineEdit(self.placeholderMachine)
-        # machineEditWindow.onOKAction.connect(self.createVM)
-        print(f"Start Manali's window and pass BHMachine object: {self.placeholderMachine}")
+        machineEditWindow = BHMachineEditDialog(self.placeholderMachine)
+        machineEditWindow.saveSignal.connect(self.createVM)
+        
 
     @Slot()
     def createVM(self):
@@ -320,98 +324,143 @@ class MachineListDialog(QDialog):
         def onEditVMButtonClicked(self):
             self.parent.placeholderMachine = self.machine
             #TODO
-            # machineEditWindow = MachineEdit(self.placeholderMachine)
-            # machineEditWindow.onOKAction.connect(self.replaceMachine)
-            print(f"Start Manali's window and pass BHMachine object: {self.parent.placeholderMachine}")
+            machineEditWindow = BHMachineEditDialog(self.parent.placeholderMachine)
+            machineEditWindow.saveSignal.connect(self.parent.replaceMachine)
 
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    sample_scenario = '''{
-    "scenario_name" : "name", 
-    "id" : 123, 
-    "creation_date" : "string", 
-    "last_accessed" : "string", 
-    "exploit_info": {
-            "name": "Name", 
-            "download_link": "link", 
-            "type": "type"
-        }, 
-    "vulnerability_info": {
-            "name": "Name", 
-            "cve_link": "url", 
-            "download_link": "link", 
-            "type": "type"
-        }, 
-    "machines": [
-        {
-            "os": "windows",
-            "name": "attacker1",
-            "id": 122,
-            "type": "pov",
-            "shared_folders": [],
-            "network_settings": [],
-            "provisions": []
-        },
-        {
-            "os": "windows",
-            "name": "attacker2",
-            "id": 123,
-            "type": "pov",
-            "shared_folders": [],
-            "network_settings": [],
-            "provisions": []
-        },
-        {
-            "os": "debian",
-            "name": "victim1",
-            "id": 124,
-            "type": "victim",
-            "shared_folders": [],
-            "network_settings": [],
-            "provisions": []
-        },
-        {
-            "os": "debian",
-            "name": "victim2",
-            "id": 125,
-            "type": "victim",
-            "shared_folders": [],
-            "network_settings": [],
-            "provisions": []
-        },
-        {
-            "os": "debian",
-            "name": "victim3",
-            "id": 126,
-            "type": "victim",
-            "shared_folders": [],
-            "network_settings": [],
-            "provisions": []
-        },
-        {
-            "os": "debian",
-            "name": "victim4",
-            "id": 127,
-            "type": "victim",
-            "shared_folders": [],
-            "network_settings": [],
-            "provisions": []
-        }
-    ],
-    "network_settings" : {
-            "network_type" : "type", 
-            "network_name" : "Name", 
-            "auto_config" : "True"
-        }
-    }'''
+#     sample_scenario = '''{
+#     "scenario_name" : "name", 
+#     "id" : 123, 
+#     "creation_date" : "string", 
+#     "last_accessed" : "string", 
+#     "exploit_info": {
+#             "name": "Name", 
+#             "download_link": "link", 
+#             "type": "type"
+#         }, 
+#     "vulnerability_info": {
+#             "name": "Name", 
+#             "cve_link": "url", 
+#             "download_link": "link", 
+#             "type": "type"
+#         }, 
+#     "machines": [
+#             {
+#             "os": "windows",
+#             "name": "attacker1",
+#             "id": 122,
+#             "type": "pov",
+#             "shared_folders": [],
+#             "network_settings": [],
+#             "provisions": [],
+#             "baseMemory": 5,
+#             "bootOrder_floppy": "False",
+#             "bootOrder_optical": "False",
+#             "bootOrder_hardDisk": "False",
+#             "bootOrder_network": "False",
+#             "chipset": "PIIX3",
+#             "pointingDevice": "PS/2 Mouse",
+#             "extFeat_enableIO": "False",
+#             "extFeat_enableEFI": "False",
+#             "extFeat_hwClockUTCtime": "False",
+#             "processors": 3,
+#             "exeCap": 99,
+#             "extFeat_EnablePAE_NX": "False",
+#             "paravirtInterface": "Default",
+#             "hdVirt_enableVTx": "False",
+#             "hdVirt_enableNestedPaging": "False"
+#         },
+# {
+#             "os": "windows",
+#             "name": "victim1",
+#             "id": 123,
+#             "type": "victim",
+#             "shared_folders": [],
+#             "network_settings": [],
+#             "provisions": [],
+#             "baseMemory": 5,
+#             "bootOrder_floppy": "False",
+#             "bootOrder_optical": "False",
+#             "bootOrder_hardDisk": "False",
+#             "bootOrder_network": "False",
+#             "chipset": "PIIX3",
+#             "pointingDevice": "PS/2 Mouse",
+#             "extFeat_enableIO": "False",
+#             "extFeat_enableEFI": "False",
+#             "extFeat_hwClockUTCtime": "False",
+#             "processors": 3,
+#             "exeCap": 99,
+#             "extFeat_EnablePAE_NX": "False",
+#             "paravirtInterface": "Default",
+#             "hdVirt_enableVTx": "False",
+#             "hdVirt_enableNestedPaging": "False"
+#         },
+# {
+#             "os": "windows",
+#             "name": "victim2",
+#             "id": 124,
+#             "type": "victim",
+#             "shared_folders": [],
+#             "network_settings": [],
+#             "provisions": [],
+#             "baseMemory": 5,
+#             "bootOrder_floppy": "False",
+#             "bootOrder_optical": "False",
+#             "bootOrder_hardDisk": "False",
+#             "bootOrder_network": "False",
+#             "chipset": "PIIX3",
+#             "pointingDevice": "PS/2 Mouse",
+#             "extFeat_enableIO": "False",
+#             "extFeat_enableEFI": "False",
+#             "extFeat_hwClockUTCtime": "False",
+#             "processors": 3,
+#             "exeCap": 99,
+#             "extFeat_EnablePAE_NX": "False",
+#             "paravirtInterface": "Default",
+#             "hdVirt_enableVTx": "False",
+#             "hdVirt_enableNestedPaging": "False"
+#         },
+# {
+#             "os": "windows",
+#             "name": "victim3",
+#             "id": 125,
+#             "type": "victim",
+#             "shared_folders": [],
+#             "network_settings": [],
+#             "provisions": [],
+#             "baseMemory": 5,
+#             "bootOrder_floppy": "False",
+#             "bootOrder_optical": "False",
+#             "bootOrder_hardDisk": "False",
+#             "bootOrder_network": "False",
+#             "chipset": "PIIX3",
+#             "pointingDevice": "PS/2 Mouse",
+#             "extFeat_enableIO": "False",
+#             "extFeat_enableEFI": "False",
+#             "extFeat_hwClockUTCtime": "False",
+#             "processors": 3,
+#             "exeCap": 99,
+#             "extFeat_EnablePAE_NX": "False",
+#             "paravirtInterface": "Default",
+#             "hdVirt_enableVTx": "False",
+#             "hdVirt_enableNestedPaging": "False"
+#         }
+#     ],
+#     "network_settings" : {
+#             "network_type" : "type", 
+#             "network_name" : "Name", 
+#             "auto_config" : "True"
+#         }
+#     }'''
 
-    testScenario = BHScenario()
-    JSONScenario = json.loads(sample_scenario)
-    testScenario.fromJSON(JSONScenario)
+#     testScenario = BHScenario()
+#     JSONScenario = json.loads(sample_scenario)
+#     testScenario.fromJSON(JSONScenario)
     
-    app = QApplication(sys.argv)
-    window = MachineListDialog(testScenario)
-    window.show()
-    sys.exit(app.exec_())
+#     app = QApplication(sys.argv)
+#     window = MachineListDialog(testScenario)
+#     window.show()
+#     sys.exit(app.exec_())
