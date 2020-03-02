@@ -23,7 +23,7 @@ class BHScenarios(object):
         }, 
     "machines": [
             {
-            "os": "windows",
+            "os": "debian",
             "name": "attacker1",
             "id": 122,
             "type": "pov",

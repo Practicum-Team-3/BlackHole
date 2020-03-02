@@ -33,4 +33,5 @@ class BHMachineEditDialog(QDialog):
         self.hide()
 
     def showeditSystemSettingWindow(self):
-        editSystemWindow = MachineSettings(self.machineObject)
+        self.editSystemWindow = MachineSettings(self.machineObject)
+        self.editSystemWindow.show()

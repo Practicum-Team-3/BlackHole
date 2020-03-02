@@ -20,7 +20,7 @@ class BHDelegate(QMainWindow):
         self.testScenarios = BHScenarios()
 
         # Instantiate main window
-        # self.window = BHMainWindow(self.testScenarios)
+        self.window = BHMainWindow(self.testScenarios)
         self.welcomeWindow = None
         self.newScenarioWindow = None
         self.machineListWindow = None
@@ -50,7 +50,7 @@ class BHDelegate(QMainWindow):
         self.newScenarioWindow = BHNewScenario(self.newScenario)
         self.newScenarioWindow.scenarioCreatedAction.connect(self.showMachineList)
 
-        self.newScenario.show()
+        self.newScenarioWindow.show()
 
 
 

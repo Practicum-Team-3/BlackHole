@@ -13,7 +13,7 @@ from Screens.BHMachineEditDialog import BHMachineEditDialog
 #from MachineEdit import MachineEdit
 import json
 
-logoPaths = {"windows":"Media\OSLogos\windows-logo.png", "debian":"Media\OSLogos\debian-logo.png"}
+logoPaths = {"windows":"Screens/Media/OSLogos/windows-logo.png", "debian":"Screens/Media/OSLogos/debian-logo.png"}
 
 genericMachine = {
     "os": "windows",
@@ -318,14 +318,16 @@ class MachineListDialog(QDialog):
                 self.parent.scenario.deletePOVMachine(self.machine.getMachineID())
                 self.parent.updatePOVs()
             self.parent.buttonGroupList.pop(self.index)
-
+            print("Deleted")
         
         @Slot()
         def onEditVMButtonClicked(self):
             self.parent.placeholderMachine = self.machine
             #TODO
-            machineEditWindow = BHMachineEditDialog(self.parent.placeholderMachine)
-            machineEditWindow.saveSignal.connect(self.parent.replaceMachine)
+            self.machineEditWindow = BHMachineEditDialog(self.parent.placeholderMachine)
+            self.machineEditWindow.saveSignal.connect(self.parent.replaceMachine)
+            print("Manali?")
+            self.machineEditWindow.show()
 
 
 
