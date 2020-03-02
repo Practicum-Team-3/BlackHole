@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>NewScenario</class>
+ <widget class="QDialog" name="NewScenario">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>484</width>
+    <height>476</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>New Scenario</string>
   </property>
-  <widget class="QDialogButtonBox" name="buttonBox">
+  <widget class="QDialogButtonBox" name="buttons">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>240</y>
+     <x>90</x>
+     <y>430</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -29,13 +29,459 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::Save</set>
    </property>
   </widget>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>130</y>
+     <width>301</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::DefaultContextMenu</enum>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Exploit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>true</bool>
+   </property>
+   <property name="sortingEnabled">
+    <bool>true</bool>
+   </property>
+   <property name="wordWrap">
+    <bool>false</bool>
+   </property>
+   <property name="rowCount">
+    <number>4</number>
+   </property>
+   <property name="columnCount">
+    <number>2</number>
+   </property>
+   <attribute name="horizontalHeaderVisible">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="horizontalHeaderCascadingSectionResizes">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="horizontalHeaderMinimumSectionSize">
+    <number>15</number>
+   </attribute>
+   <attribute name="horizontalHeaderDefaultSectionSize">
+    <number>80</number>
+   </attribute>
+   <attribute name="verticalHeaderVisible">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="verticalHeaderCascadingSectionResizes">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderMinimumSectionSize">
+    <number>15</number>
+   </attribute>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>20</number>
+   </attribute>
+   <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+    <bool>false</bool>
+   </attribute>
+   <row>
+    <property name="text">
+     <string>Exploits                   </string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>e0</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>e1</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>e2</string>
+    </property>
+   </row>
+   <column>
+    <property name="text">
+     <string>Path</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Delete</string>
+    </property>
+   </column>
+   <item row="0" column="0">
+    <property name="text">
+     <string/>
+    </property>
+   </item>
+   <item row="0" column="1">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="textAlignment">
+     <set>AlignHCenter|AlignTop</set>
+    </property>
+    <property name="checkState">
+     <enum>Unchecked</enum>
+    </property>
+    <property name="flags">
+     <set>NoItemFlags</set>
+    </property>
+   </item>
+   <item row="1" column="0">
+    <property name="flags">
+     <set>ItemIsEnabled</set>
+    </property>
+   </item>
+   <item row="1" column="1">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="checkState">
+     <enum>Unchecked</enum>
+    </property>
+    <property name="flags">
+     <set>ItemIsSelectable|ItemIsUserCheckable|ItemIsEnabled</set>
+    </property>
+   </item>
+   <item row="2" column="0">
+    <property name="flags">
+     <set>ItemIsEnabled</set>
+    </property>
+   </item>
+   <item row="2" column="1">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="checkState">
+     <enum>Unchecked</enum>
+    </property>
+    <property name="flags">
+     <set>ItemIsUserCheckable|ItemIsEnabled</set>
+    </property>
+   </item>
+   <item row="3" column="0">
+    <property name="flags">
+     <set>ItemIsEnabled</set>
+    </property>
+   </item>
+   <item row="3" column="1">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="checkState">
+     <enum>Unchecked</enum>
+    </property>
+    <property name="flags">
+     <set>ItemIsUserCheckable|ItemIsEnabled</set>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>0</y>
+     <width>121</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>New Scenario</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>60</y>
+     <width>91</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Scenario Name</string>
+   </property>
+  </widget>
+  <widget class="QPlainTextEdit" name="scenarioName">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>80</y>
+     <width>279</width>
+     <height>24</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="tableWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>290</y>
+     <width>301</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="contextMenuPolicy">
+    <enum>Qt::DefaultContextMenu</enum>
+   </property>
+   <property name="whatsThis">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Exploit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="alternatingRowColors">
+    <bool>true</bool>
+   </property>
+   <property name="sortingEnabled">
+    <bool>true</bool>
+   </property>
+   <property name="wordWrap">
+    <bool>false</bool>
+   </property>
+   <property name="rowCount">
+    <number>4</number>
+   </property>
+   <property name="columnCount">
+    <number>2</number>
+   </property>
+   <attribute name="horizontalHeaderVisible">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="horizontalHeaderCascadingSectionResizes">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="horizontalHeaderMinimumSectionSize">
+    <number>15</number>
+   </attribute>
+   <attribute name="horizontalHeaderDefaultSectionSize">
+    <number>75</number>
+   </attribute>
+   <attribute name="verticalHeaderVisible">
+    <bool>true</bool>
+   </attribute>
+   <attribute name="verticalHeaderCascadingSectionResizes">
+    <bool>false</bool>
+   </attribute>
+   <attribute name="verticalHeaderMinimumSectionSize">
+    <number>15</number>
+   </attribute>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>20</number>
+   </attribute>
+   <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+    <bool>false</bool>
+   </attribute>
+   <row>
+    <property name="text">
+     <string>Vulnerable Programs</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>p0</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>p1</string>
+    </property>
+   </row>
+   <row>
+    <property name="text">
+     <string>p2</string>
+    </property>
+   </row>
+   <column>
+    <property name="text">
+     <string>Path</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Delete</string>
+    </property>
+   </column>
+   <item row="0" column="0">
+    <property name="flags">
+     <set>NoItemFlags</set>
+    </property>
+   </item>
+   <item row="0" column="1">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="checkState">
+     <enum>Unchecked</enum>
+    </property>
+    <property name="flags">
+     <set>NoItemFlags</set>
+    </property>
+   </item>
+   <item row="1" column="0">
+    <property name="flags">
+     <set>ItemIsEnabled</set>
+    </property>
+   </item>
+   <item row="1" column="1">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="textAlignment">
+     <set>AlignCenter</set>
+    </property>
+    <property name="checkState">
+     <enum>Unchecked</enum>
+    </property>
+   </item>
+   <item row="2" column="0">
+    <property name="flags">
+     <set>ItemIsEnabled</set>
+    </property>
+   </item>
+   <item row="2" column="1">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="checkState">
+     <enum>Unchecked</enum>
+    </property>
+   </item>
+   <item row="3" column="1">
+    <property name="text">
+     <string/>
+    </property>
+    <property name="checkState">
+     <enum>Unchecked</enum>
+    </property>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="addExploit">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>160</y>
+     <width>41</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>17</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>+</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="delExploit">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>130</y>
+     <width>61</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="addVulProg">
+   <property name="geometry">
+    <rect>
+     <x>390</x>
+     <y>320</y>
+     <width>41</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>17</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>+</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="delVulProg">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>290</y>
+     <width>61</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </widget>
+  <zorder>tableWidget</zorder>
+  <zorder>buttons</zorder>
+  <zorder>label</zorder>
+  <zorder>label_2</zorder>
+  <zorder>scenarioName</zorder>
+  <zorder>tableWidget_2</zorder>
+  <zorder>addExploit</zorder>
+  <zorder>delExploit</zorder>
+  <zorder>addVulProg</zorder>
+  <zorder>delVulProg</zorder>
  </widget>
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>buttons</sender>
    <signal>accepted()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>NewScenario</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -49,9 +495,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>buttons</sender>
    <signal>rejected()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>NewScenario</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -65,4 +511,21 @@
    </hints>
   </connection>
  </connections>
+ <designerdata>
+  <property name="gridDeltaX">
+   <number>10</number>
+  </property>
+  <property name="gridDeltaY">
+   <number>10</number>
+  </property>
+  <property name="gridSnapX">
+   <bool>true</bool>
+  </property>
+  <property name="gridSnapY">
+   <bool>true</bool>
+  </property>
+  <property name="gridVisible">
+   <bool>true</bool>
+  </property>
+ </designerdata>
 </ui>
