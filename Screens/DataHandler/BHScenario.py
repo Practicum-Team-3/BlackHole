@@ -19,9 +19,11 @@ class BHScenario(object):
     def setName(self, newName):
         self.scenario_name = newName
 
+
     #returns the list of POV machines
     def getPOVMachines(self):
         return self.POVMachines
+
 
     #returns the list of victim machines
     def getVictimMachines(self):
@@ -31,7 +33,7 @@ class BHScenario(object):
     #deletes the pov machine with the given machineID
     def deletePOVMachine(self, machineID):
         for i in range(len(self.POVMachines)):
-            if self.POVMachines[i].getMachineID == machineID:
+            if self.POVMachines[i].getMachineID() == machineID:
                 self.POVMachines.pop(i)
                 return True
         return False
@@ -39,7 +41,7 @@ class BHScenario(object):
     #deletes the victim machine with given machineID
     def deleteVictimMachine(self, machineID):
         for i in range(len(self.victimMachines)):
-            if self.victimMachines[i].getMachineID == machineID:
+            if self.victimMachines[i].getMachineID() == machineID:
                 self.victimMachines.pop(i)
                 return True
         return False

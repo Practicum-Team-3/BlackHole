@@ -1,7 +1,7 @@
 import sys, os
 from PySide2.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QScrollArea, 
-QFormLayout, QGroupBox, QLabel, QPushButton, QHBoxLayout, QLayoutItem, QAction, QDialog)
-from PySide2.QtCore import (QFile, QDate, Signal, Slot, QObject)
+QFormLayout, QGroupBox, QLabel, QPushButton, QHBoxLayout, QLayoutItem, QAction, QDialog, QLayout)
+from PySide2.QtCore import (QFile, QDate, Slot, QObject, Signal)
 from PySide2.QtGui import (QPixmap, QFont)
 from Interfaces.ui_machineList import Ui_MachineList
 from DataHandler.BHScenario import BHScenario #getPOVMachines()  ,  getVictimMachines()
@@ -36,86 +36,92 @@ genericMachine = {
     }]
 }
 
-#VM Quick View Widget
-class QuickView(QWidget):
-    def __init__(self, BHMachine, indexOnList):
-        super(QuickView, self).__init__()
-        self.setFixedSize(300, 150)
-        self.machine = BHMachine
-        self.listIndex = indexOnList
-        self.mainHorizontalLayout = QHBoxLayout()
-        self.VMInfoAndOptionsVerticalLayout = QVBoxLayout()
+# #VM Quick View Widget
+# class QuickView(QWidget):
+#     # class EditSignalObject(QObject):
+#     #     editButtonClickedSignal = Signal(BHMachine)
 
-        self.setLogo(BHMachine.getOS())
+#     # class DeleteSignalObject(QObject):
+#     #     deleteButtonClickedSignal = Signal(bool, int)
 
-        #Decide which values will be displayed
-        self.setFields(BHMachine.getFieldsToShow())
+#     def __init__(self, BHMachine, indexOnList):
+#         super(QuickView, self).__init__()
+#         self.setFixedSize(300, 150)
+#         self.machine = BHMachine
+#         self.listIndex = indexOnList
+#         self.mainHorizontalLayout = QHBoxLayout()
+#         self.VMInfoAndOptionsVerticalLayout = QVBoxLayout()
 
-        self.signalObject = QObject()
-        self.signalObject.editButtonClickedSignal = Signal(BHMachine)
-        self.signalObject.deleteButtonClickedSignal = Signal(bool, int)
+#         self.setLogo(BHMachine.getOS())
 
-        #set buttons
-        self.setButtons()
+#         #Decide which values will be displayed
+#         self.setFields(BHMachine.getFieldsToShow())
 
-        #add to main layout
-        self.mainHorizontalLayout.addLayout(self.VMInfoAndOptionsVerticalLayout)
-        self.setLayout(self.mainHorizontalLayout)
+#         #instantiate signal object
+#         # self.editSignalObject = self.EditSignalObject()
+#         # self.deleteSignalObject = self.DeleteSignalObject()
 
+#         #set buttons
+#         self.setButtons()
 
-    def setLogo(self, osName):
-        #Add VM image to right pane
-        logoPath = logoPaths[str(osName).lower()]
-        VMLogo = QPixmap(logoPath)
-        VMLogo = VMLogo.scaledToHeight(100)
-        VMLogo = VMLogo.scaledToWidth(100)
-        sampleLabel = QLabel()
-        sampleLabel.setPixmap(VMLogo)
-        sampleLabel.setMinimumSize(100, 100)
-        sampleLabel.setMaximumSize(100, 100)
-
-        self.mainHorizontalLayout.addWidget(sampleLabel)
+#         #add to main layout
+#         self.mainHorizontalLayout.addLayout(self.VMInfoAndOptionsVerticalLayout)
+#         self.setLayout(self.mainHorizontalLayout)
 
 
-    def setButtons(self):
-        #Create edit-delete buttons
-        editAndDeleteButtonsHorizLayout = QHBoxLayout()
-        editVMButton = QPushButton("Edit")
-        editVMButton.setMaximumWidth(50)
-        editVMButton.clicked.connect(self.editVMButtonClicked)#(self.machine.isVictim(), self.listIndex)
+#     def setLogo(self, osName):
+#         #Add VM image to right pane
+#         logoPath = logoPaths[str(osName).lower()]
+#         VMLogo = QPixmap(logoPath)
+#         VMLogo = VMLogo.scaledToHeight(100)
+#         VMLogo = VMLogo.scaledToWidth(100)
+#         sampleLabel = QLabel()
+#         sampleLabel.setPixmap(VMLogo)
+#         sampleLabel.setMinimumSize(100, 100)
+#         sampleLabel.setMaximumSize(100, 100)
 
-        deleteVMButton = QPushButton("Delete")
-        deleteVMButton.setMaximumWidth(50)
-        deleteVMButton.clicked.connect(self.deleteVMButtonClicked)#(self.machine.isVictim(), self.listIndex)
-
-        editAndDeleteButtonsHorizLayout.addWidget(editVMButton)
-        editAndDeleteButtonsHorizLayout.addWidget(deleteVMButton)
-
-        #Add to left pane
-        self.VMInfoAndOptionsVerticalLayout.addLayout(editAndDeleteButtonsHorizLayout)
+#         self.mainHorizontalLayout.addWidget(sampleLabel)
 
 
-    def setFields(self, fieldsList):
-        #Create VM info
-        VMFields = QFormLayout()
-        for key, val in fieldsList.items():
-            label = QLabel(f"{str(key).capitalize()}:")
-            font = QFont()
-            font.setBold(True)
-            font.setPointSize(8)
-            label.setFont(font)
-            value = QLabel(str(val))
+#     def setButtons(self):
+#         #Create edit-delete buttons
+#         editAndDeleteButtonsHorizLayout = QHBoxLayout()
+#         editVMButton = QPushButton("Edit")
+#         editVMButton.setMaximumWidth(50)
+#         editVMButton.clicked.connect(self.editVMButtonClicked)#(self.machine.isVictim(), self.listIndex)
 
-            VMFields.addRow(label, value)
+#         deleteVMButton = QPushButton("Delete")
+#         deleteVMButton.setMaximumWidth(50)
+#         deleteVMButton.clicked.connect(self.deleteVMButtonClicked)#(self.machine.isVictim(), self.listIndex)
 
-        self.VMInfoAndOptionsVerticalLayout.addLayout(VMFields)
+#         editAndDeleteButtonsHorizLayout.addWidget(editVMButton)
+#         editAndDeleteButtonsHorizLayout.addWidget(deleteVMButton)
+
+#         #Add to left pane
+#         self.VMInfoAndOptionsVerticalLayout.addLayout(editAndDeleteButtonsHorizLayout)
 
 
-    def editVMButtonClicked(self):
-        self.signalObject.emit(self.machine)
+#     def setFields(self, fieldsList):
+#         #Create VM info
+#         VMFields = QFormLayout()
+#         for key, val in fieldsList.items():
+#             label = QLabel(f"{str(key).capitalize()}:")
+#             font = QFont()
+#             font.setBold(True)
+#             font.setPointSize(8)
+#             label.setFont(font)
+#             value = QLabel(str(val))
 
-    def deleteVMButtonClicked(self):
-        self.signalObject.emit(self.machine.isVictim(), self.machine.getMachineID())
+#             VMFields.addRow(label, value)
+
+#         self.VMInfoAndOptionsVerticalLayout.addLayout(VMFields)
+
+
+#     def editVMButtonClicked(self):
+#         self.editSignalObject.editButtonClickedSignal.emit(self.machine)
+
+#     def deleteVMButtonClicked(self):
+#         self.deleteSignalObject.deleteButtonClickedSignal.emit(self.machine.isVictim(), self.machine.getMachineID())
 
 
 class MachineListDialog(QDialog):
@@ -126,12 +132,24 @@ class MachineListDialog(QDialog):
         self.scenario = BHScenario
         self.placeholderMachine = None
 
+        self.buttonGroupList = []
+
         #Get JSON from String
         self.setLabels()
 
         #setup QuickViews
-        self.updatePOVs(self.scenario)
-        self.updateVictims(self.scenario)
+        self.attackersLayout = QVBoxLayout()
+        self.attackersScroll = self.getScrollArea()
+        self.updatePOVs()
+        self.attackersLayout.addWidget(self.attackersScroll)
+        self.ui.horizontalLayout.addLayout(self.attackersLayout)
+
+
+        self.victimsLayout = QVBoxLayout()
+        self.victimsScroll = self.getScrollArea()
+        self.updateVictims()
+        self.victimsLayout.addWidget(self.victimsScroll)
+        self.ui.horizontalLayout.addLayout(self.victimsLayout)
 
         #create buttons
         createVMButton = QPushButton("Create VM")
@@ -140,27 +158,20 @@ class MachineListDialog(QDialog):
         #add buttons to layout
         self.ui.horizontalLayout_3.addWidget(createVMButton)
 
-        #set up save and cancel buttons
-        # self.ui.buttonBox.accepted.connect(self.onSaveClicked)
-        # self.ui.buttonBox.rejected.connect(self.onCancelClicked)
+        #set save and cancel buttons
+        self.ui.buttonBox.accepted.connect(self.onSaveClicked)
+        self.ui.buttonBox.rejected.connect(self.onCancelClicked)
 
-    def updatePOVs(self, BHScenario):
-        self.attackersLayout = QVBoxLayout()
-        self.attackersScroll = self.getScrollArea()
-        self.attackersScroll.setWidget(self.getQuickViewList(BHScenario.getPOVMachines()))
-        self.attackersLayout.addWidget(self.attackersScroll)
-        self.ui.horizontalLayout.addLayout(self.attackersLayout)
+    def updatePOVs(self):
+        self.attackersScroll.setWidget(self.getQuickViewList(self.scenario.getPOVMachines()))
 
 
-    def updateVictims(self, BHScenario):
-        self.victimsLayout = QVBoxLayout()
-        self.victimsScroll = self.getScrollArea()
-        self.victimsScroll.setWidget(self.getQuickViewList(BHScenario.getVictimMachines()))
-        self.victimsLayout.addWidget(self.victimsScroll)
-        self.ui.horizontalLayout.addLayout(self.victimsLayout)
+    def updateVictims(self):
+        self.victimsScroll.setWidget(self.getQuickViewList(self.scenario.getVictimMachines()))
+
 
     def setLabels(self):
-        PoCLabel = QLabel("PoCs")
+        PoCLabel = QLabel("PoVs")
         victimLabel = QLabel("Victims")
         font = QFont()
         font.setBold(True)
@@ -169,6 +180,8 @@ class MachineListDialog(QDialog):
         victimLabel.setFont(font)
         self.ui.horizontalLayout_2.addWidget(PoCLabel)
         self.ui.horizontalLayout_2.addWidget(victimLabel)
+
+
 
     def getScrollArea(self):
         #setup PoC quickviews
@@ -182,8 +195,8 @@ class MachineListDialog(QDialog):
         verticalLayout = QVBoxLayout()
         groupBox = QGroupBox()
         for i in range(len(BHMachinesList) - 1, -1, -1):
-            quickView = QuickView(BHMachinesList[i], i)
-            verticalLayout.addWidget(quickView)
+            quickViewWidget = self.addQuickView(BHMachinesList[i], i)
+            verticalLayout.addWidget(quickViewWidget)
         groupBox.setLayout(verticalLayout)
         return groupBox
 
@@ -193,50 +206,123 @@ class MachineListDialog(QDialog):
         #TODO
         # machineEditWindow = MachineEdit(self.placeholderMachine)
         # machineEditWindow.onOKAction.connect(self.createVM)
-        print(f"create machine clicked")
-
-
-    @Slot(bool, int)
-    def onDeleteVM(self, isVictim, machineID):
-        if isVictim:
-            self.scenario.deleteVictimMachine(machineID)
-            self.updateVictims(self.scenario)
-        else:
-            self.scenario.deletePOVMachine(machineID)
-            self.updatePOVs(self.scenario)
-        print(f"delete clicked from {isVictim} machine {machineID}")
-    
-    @Slot(BHMachine)
-    def onEditVMButtonClicked(self, BHMachine):
-        self.placeholderMachine = BHMachine
-        #TODO
-        # machineEditWindow = MachineEdit(self.placeholderMachine)
-        # machineEditWindow.onOKAction.connect(self.replaceMachine)
-        print(f"edit clicked from machine {BHMachine.getMachineID()}")
-
-    @Slot()
-    def replaceMachine(self):
-        self.scenario.replaceMachine(self.placeholderMachine.getMachineID(), self.placeholderMachine, self.placeholderMachine.isVictim())
-        if self.placeholderMachine.isVictim():
-            self.updateVictims(self.scenario)
-        else:
-            self.updatePOVs(self.scenario)
-
+        print(f"Start Manali's window and pass BHMachine object: {self.placeholderMachine}")
 
     @Slot()
     def createVM(self):
         self.scenario.addMachine(self.placeholderMachine)
         if self.placeholderMachine.isVictim():
-            self.updateVictims(self.scenario)
+            self.updateVictims()
         else:
-            self.updatePOVs(self.scenario)
+            self.updatePOVs()
+
+    @Slot()
+    def replaceMachine(self):
+        self.scenario.replaceMachine(self.placeholderMachine.getMachineID(), self.placeholderMachine, self.placeholderMachine.isVictim())
+        if self.placeholderMachine.isVictim():
+            self.updateVictims()
+        else:
+            self.updatePOVs()
 
 
     def onSaveClicked(self):
-        print("returned modified JSON")
+        print("Start Jose's window...")
+        self.accept()
 
     def onCancelClicked(self):
-        print("return original JSON")
+        print("Go back to Freddye's window...")
+        self.reject()
+
+
+
+    #QUICKVIEW functions
+    def addQuickView(self, BHMachine, MachineID):
+        mainHorizontalLayout = QHBoxLayout()
+        widget = QWidget()
+        widget.setFixedSize(300, 150)
+        VMInfoAndOptionsVerticalLayout = QVBoxLayout()
+        mainHorizontalLayout.addWidget(self.getLogo(BHMachine.getOS()))
+        VMInfoAndOptionsVerticalLayout.addLayout(self.getMachineFields(BHMachine.getFieldsToShow()))
+
+        editAndDeleteButtonsHorizLayout = QHBoxLayout()
+
+        #Create edit-delete buttons
+        editVMButton = QPushButton("Edit")
+        editVMButton.setMaximumWidth(50)
+
+        deleteVMButton = QPushButton("Delete")
+        deleteVMButton.setMaximumWidth(50)
+
+        buttonGroup = self.ButtonGroup(self, len(self.buttonGroupList),BHMachine)
+
+        deleteVMButton.clicked.connect(buttonGroup.onDeleteVM)
+        editVMButton.clicked.connect(buttonGroup.onEditVMButtonClicked)
+
+        self.buttonGroupList.append(buttonGroup)
+
+        editAndDeleteButtonsHorizLayout.addWidget(editVMButton)
+        editAndDeleteButtonsHorizLayout.addWidget(deleteVMButton)
+
+        #Add to left pane
+        VMInfoAndOptionsVerticalLayout.addLayout(editAndDeleteButtonsHorizLayout)
+        mainHorizontalLayout.addLayout(VMInfoAndOptionsVerticalLayout)
+        widget.setLayout(mainHorizontalLayout)
+        return widget
+
+
+    def getLogo(self, osName):
+        #Add VM image to right pane
+        logoPath = logoPaths[str(osName).lower()]
+        VMLogo = QPixmap(logoPath)
+        VMLogo = VMLogo.scaledToHeight(100)
+        VMLogo = VMLogo.scaledToWidth(100)
+        sampleLabel = QLabel()
+        sampleLabel.setPixmap(VMLogo)
+        sampleLabel.setMinimumSize(100, 100)
+        sampleLabel.setMaximumSize(100, 100)
+        return sampleLabel
+
+
+    def getMachineFields(self, fieldsList):
+        #Create VM info
+        VMFields = QFormLayout()
+        for key, val in fieldsList.items():
+            label = QLabel(f"{str(key).capitalize()}:")
+            font = QFont()
+            font.setBold(True)
+            font.setPointSize(8)
+            label.setFont(font)
+            value = QLabel(str(val))
+
+            VMFields.addRow(label, value)
+
+        return VMFields
+
+    
+    class ButtonGroup():
+        def __init__(self, parent, index, BHMachine):
+            self.parent = parent
+            self.machine = BHMachine
+            self.index = index
+
+        @Slot()
+        def onDeleteVM(self):
+            if self.machine.isVictim():
+                self.parent.scenario.deleteVictimMachine(self.machine.getMachineID())
+                self.parent.updateVictims()
+            else:
+                self.parent.scenario.deletePOVMachine(self.machine.getMachineID())
+                self.parent.updatePOVs()
+            self.parent.buttonGroupList.pop(self.index)
+
+        
+        @Slot()
+        def onEditVMButtonClicked(self):
+            self.parent.placeholderMachine = self.machine
+            #TODO
+            # machineEditWindow = MachineEdit(self.placeholderMachine)
+            # machineEditWindow.onOKAction.connect(self.replaceMachine)
+            print(f"Start Manali's window and pass BHMachine object: {self.parent.placeholderMachine}")
 
 
 
@@ -262,6 +348,15 @@ if __name__ == "__main__":
         {
             "os": "windows",
             "name": "attacker1",
+            "id": 122,
+            "type": "pov",
+            "shared_folders": [],
+            "network_settings": [],
+            "provisions": []
+        },
+        {
+            "os": "windows",
+            "name": "attacker2",
             "id": 123,
             "type": "pov",
             "shared_folders": [],
@@ -272,6 +367,33 @@ if __name__ == "__main__":
             "os": "debian",
             "name": "victim1",
             "id": 124,
+            "type": "victim",
+            "shared_folders": [],
+            "network_settings": [],
+            "provisions": []
+        },
+        {
+            "os": "debian",
+            "name": "victim2",
+            "id": 125,
+            "type": "victim",
+            "shared_folders": [],
+            "network_settings": [],
+            "provisions": []
+        },
+        {
+            "os": "debian",
+            "name": "victim3",
+            "id": 126,
+            "type": "victim",
+            "shared_folders": [],
+            "network_settings": [],
+            "provisions": []
+        },
+        {
+            "os": "debian",
+            "name": "victim4",
+            "id": 127,
             "type": "victim",
             "shared_folders": [],
             "network_settings": [],
