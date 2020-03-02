@@ -74,10 +74,10 @@ class Ui_MachineInfo(object):
 
         self.formLayout_2.setWidget(0, QFormLayout.LabelRole, self.label_4)
 
-        self.label_5 = QLabel(self.frame)
-        self.label_5.setObjectName(u"label_5")
+        self.name = QLabel(self.frame)
+        self.name.setObjectName(u"name")
 
-        self.formLayout_2.setWidget(0, QFormLayout.FieldRole, self.label_5)
+        self.formLayout_2.setWidget(0, QFormLayout.FieldRole, self.name)
 
         self.label_6 = QLabel(self.frame)
         self.label_6.setObjectName(u"label_6")
@@ -86,10 +86,10 @@ class Ui_MachineInfo(object):
 
         self.formLayout_2.setWidget(1, QFormLayout.LabelRole, self.label_6)
 
-        self.label_7 = QLabel(self.frame)
-        self.label_7.setObjectName(u"label_7")
+        self.os = QLabel(self.frame)
+        self.os.setObjectName(u"os")
 
-        self.formLayout_2.setWidget(1, QFormLayout.FieldRole, self.label_7)
+        self.formLayout_2.setWidget(1, QFormLayout.FieldRole, self.os)
 
         self.label_8 = QLabel(self.frame)
         self.label_8.setObjectName(u"label_8")
@@ -98,10 +98,10 @@ class Ui_MachineInfo(object):
 
         self.formLayout_2.setWidget(2, QFormLayout.LabelRole, self.label_8)
 
-        self.label_9 = QLabel(self.frame)
-        self.label_9.setObjectName(u"label_9")
+        self.vulnerability = QLabel(self.frame)
+        self.vulnerability.setObjectName(u"vulnerability")
 
-        self.formLayout_2.setWidget(2, QFormLayout.FieldRole, self.label_9)
+        self.formLayout_2.setWidget(2, QFormLayout.FieldRole, self.vulnerability)
 
         self.label_10 = QLabel(self.frame)
         self.label_10.setObjectName(u"label_10")
@@ -110,10 +110,10 @@ class Ui_MachineInfo(object):
 
         self.formLayout_2.setWidget(3, QFormLayout.LabelRole, self.label_10)
 
-        self.label_11 = QLabel(self.frame)
-        self.label_11.setObjectName(u"label_11")
+        self.collector = QLabel(self.frame)
+        self.collector.setObjectName(u"collector")
 
-        self.formLayout_2.setWidget(3, QFormLayout.FieldRole, self.label_11)
+        self.formLayout_2.setWidget(3, QFormLayout.FieldRole, self.collector)
 
         self.editButton = QPushButton(self.frame)
         self.editButton.setObjectName(u"editButton")
@@ -244,13 +244,13 @@ class Ui_MachineInfo(object):
         MachineInfo.setWindowTitle(QCoreApplication.translate("MachineInfo", u"Frame", None))
         self.icon.setText("")
         self.label_4.setText(QCoreApplication.translate("MachineInfo", u"Name", None))
-        self.label_5.setText(QCoreApplication.translate("MachineInfo", u"VM-B1", None))
+        self.name.setText(QCoreApplication.translate("MachineInfo", u"VM-B1", None))
         self.label_6.setText(QCoreApplication.translate("MachineInfo", u"OS", None))
-        self.label_7.setText(QCoreApplication.translate("MachineInfo", u"Windows 10", None))
+        self.os.setText(QCoreApplication.translate("MachineInfo", u"Windows 10", None))
         self.label_8.setText(QCoreApplication.translate("MachineInfo", u"Vulnerability", None))
-        self.label_9.setText(QCoreApplication.translate("MachineInfo", u"p0", None))
+        self.vulnerability.setText(QCoreApplication.translate("MachineInfo", u"p0", None))
         self.label_10.setText(QCoreApplication.translate("MachineInfo", u"Collector", None))
-        self.label_11.setText(QCoreApplication.translate("MachineInfo", u"ECELd", None))
+        self.collector.setText(QCoreApplication.translate("MachineInfo", u"ECELd", None))
         self.editButton.setText(QCoreApplication.translate("MachineInfo", u"Edit", None))
         self.pushButton_2.setText(QCoreApplication.translate("MachineInfo", u"Delete", None))
         self.collectorBox.setTitle(QCoreApplication.translate("MachineInfo", u"Network", None))

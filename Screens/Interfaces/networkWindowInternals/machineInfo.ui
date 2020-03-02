@@ -122,7 +122,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QLabel" name="label_5">
+          <widget class="QLabel" name="name">
            <property name="text">
             <string>VM-B1</string>
            </property>
@@ -145,7 +145,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLabel" name="label_7">
+          <widget class="QLabel" name="os">
            <property name="text">
             <string>Windows 10</string>
            </property>
@@ -168,7 +168,7 @@
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QLabel" name="label_9">
+          <widget class="QLabel" name="vulnerability">
            <property name="text">
             <string>p0</string>
            </property>
@@ -191,7 +191,7 @@
           </widget>
          </item>
          <item row="3" column="1">
-          <widget class="QLabel" name="label_11">
+          <widget class="QLabel" name="collector">
            <property name="text">
             <string>ECELd</string>
            </property>
