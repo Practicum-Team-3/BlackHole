@@ -2,8 +2,8 @@ import sys
 import json
 from PySide2.QtWidgets import QApplication, QMainWindow, QDialog
 from PySide2.QtCore import QFile
-from Interfaces.ui_machineSettings import Ui_MachineSettings
-from BHMachine import BHMachine
+from Screens.Interfaces.ui_machineSettings import Ui_MachineSettings
+from Screens.DataHandler.BHMachine import BHMachine
 
 # will take a BHMachine instance
 class MachineSettings(QDialog):
@@ -151,38 +151,38 @@ class MachineSettings(QDialog):
     def cancelPressed(self):
         print("Cancel pressed, exiting \"Machine Settings\" window.")
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
 
-    test = '''{
-            "os": "windows",
-            "name": "attacker1",
-            "id": 122,
-            "type": "pov",
-            "shared_folders": [],
-            "network_settings": [],
-            "provisions": [],
-            "baseMemory": 5,
-            "bootOrder_floppy": "False",
-            "bootOrder_optical": "False",
-            "bootOrder_hardDisk": "False",
-            "bootOrder_network": "False",
-            "chipset": "PIIX3",
-            "pointingDevice": "PS/2 Mouse",
-            "extFeat_enableIO": "False",
-            "extFeat_enableEFI": "False",
-            "extFeat_hwClockUTCtime": "False",
-            "processors": 3,
-            "exeCap": 99,
-            "extFeat_EnablePAE_NX": "False",
-            "paravirtInterface": "Default",
-            "hdVirt_enableVTx": "False",
-            "hdVirt_enableNestedPaging": "False"
-        }'''
-    jsonObject = json.loads(test)
-    testMachine = BHMachine()
-    testMachine.fromJSON(jsonObject)
-    window = MachineSettings(testMachine)
-    window.show()
+#     test = '''{
+#             "os": "windows",
+#             "name": "attacker1",
+#             "id": 122,
+#             "type": "pov",
+#             "shared_folders": [],
+#             "network_settings": [],
+#             "provisions": [],
+#             "baseMemory": 5,
+#             "bootOrder_floppy": "False",
+#             "bootOrder_optical": "False",
+#             "bootOrder_hardDisk": "False",
+#             "bootOrder_network": "False",
+#             "chipset": "PIIX3",
+#             "pointingDevice": "PS/2 Mouse",
+#             "extFeat_enableIO": "False",
+#             "extFeat_enableEFI": "False",
+#             "extFeat_hwClockUTCtime": "False",
+#             "processors": 3,
+#             "exeCap": 99,
+#             "extFeat_EnablePAE_NX": "False",
+#             "paravirtInterface": "Default",
+#             "hdVirt_enableVTx": "False",
+#             "hdVirt_enableNestedPaging": "False"
+#         }'''
+#     jsonObject = json.loads(test)
+#     testMachine = BHMachine()
+#     testMachine.fromJSON(jsonObject)
+#     window = MachineSettings(testMachine)
+#     window.show()
 
-    sys.exit(app.exec_())
+#     sys.exit(app.exec_())

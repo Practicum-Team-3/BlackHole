@@ -1,4 +1,4 @@
-from DataHandler.BHMachine import BHMachine
+from Screens.DataHandler.BHMachine import BHMachine
 import json
 
 class BHScenario(object):

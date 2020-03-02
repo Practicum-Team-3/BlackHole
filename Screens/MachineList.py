@@ -3,13 +3,17 @@ from PySide2.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
 QFormLayout, QGroupBox, QLabel, QPushButton, QHBoxLayout, QLayoutItem, QAction, QDialog, QLayout)
 from PySide2.QtCore import (QFile, QDate, Slot, QObject, Signal)
 from PySide2.QtGui import (QPixmap, QFont)
-from Interfaces.ui_machineList import Ui_MachineList
-from DataHandler.BHScenario import BHScenario #getPOVMachines()  ,  getVictimMachines()
-from DataHandler.BHMachine import BHMachine
+from Screens.Interfaces.ui_machineList import Ui_MachineList
+from Screens.DataHandler.BHScenario import BHScenario #getPOVMachines()  ,  getVictimMachines()
+from Screens.DataHandler.BHMachine import BHMachine
+
+from Screens.MachineSettings import MachineSettings
+from Screens.BHMachineEditDialog import BHMachineEditDialog
+
 #from MachineEdit import MachineEdit
 import json
 
-logoPaths = {"windows":"Media\OSLogos\windows-logo.png", "debian":"Media\OSLogos\debian-logo.png"}
+logoPaths = {"windows":"Screens/Media/OSLogos/windows-logo.png", "debian":"Screens/Media/OSLogos/debian-logo.png"}
 
 genericMachine = {
     "os": "windows",
@@ -159,8 +163,8 @@ class MachineListDialog(QDialog):
         self.ui.horizontalLayout_3.addWidget(createVMButton)
 
         #set save and cancel buttons
-        self.ui.buttonBox.accepted.connect(self.onSaveClicked)
-        self.ui.buttonBox.rejected.connect(self.onCancelClicked)
+        # self.ui.buttonBox.accepted.connect(self.onSaveClicked)
+        # self.ui.buttonBox.rejected.connect(self.onCancelClicked)
 
     def updatePOVs(self):
         self.attackersScroll.setWidget(self.getQuickViewList(self.scenario.getPOVMachines()))
@@ -204,9 +208,9 @@ class MachineListDialog(QDialog):
     def onCreateVMButtonClicked(self):
         self.placeholderMachine = BHMachine()
         #TODO
-        # machineEditWindow = MachineEdit(self.placeholderMachine)
-        # machineEditWindow.onOKAction.connect(self.createVM)
-        print(f"Start Manali's window and pass BHMachine object: {self.placeholderMachine}")
+        machineEditWindow = BHMachineEditDialog(self.placeholderMachine)
+        machineEditWindow.saveSignal.connect(self.createVM)
+        
 
     @Slot()
     def createVM(self):
@@ -314,104 +318,50 @@ class MachineListDialog(QDialog):
                 self.parent.scenario.deletePOVMachine(self.machine.getMachineID())
                 self.parent.updatePOVs()
             self.parent.buttonGroupList.pop(self.index)
-
+            print("Deleted")
         
         @Slot()
         def onEditVMButtonClicked(self):
             self.parent.placeholderMachine = self.machine
             #TODO
-            # machineEditWindow = MachineEdit(self.placeholderMachine)
-            # machineEditWindow.onOKAction.connect(self.replaceMachine)
-            print(f"Start Manali's window and pass BHMachine object: {self.parent.placeholderMachine}")
+            self.machineEditWindow = BHMachineEditDialog(self.parent.placeholderMachine)
+            self.machineEditWindow.saveSignal.connect(self.parent.replaceMachine)
+            print("Manali?")
+            self.machineEditWindow.show()
 
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    sample_scenario = '''{
-    "scenario_name" : "name", 
-    "id" : 123, 
-    "creation_date" : "string", 
-    "last_accessed" : "string", 
-    "exploit_info": {
-            "name": "Name", 
-            "download_link": "link", 
-            "type": "type"
-        }, 
-    "vulnerability_info": {
-            "name": "Name", 
-            "cve_link": "url", 
-            "download_link": "link", 
-            "type": "type"
-        }, 
-    "machines": [
-        {
-            "os": "windows",
-            "name": "attacker1",
-            "id": 122,
-            "type": "pov",
-            "shared_folders": [],
-            "network_settings": [],
-            "provisions": []
-        },
-        {
-            "os": "windows",
-            "name": "attacker2",
-            "id": 123,
-            "type": "pov",
-            "shared_folders": [],
-            "network_settings": [],
-            "provisions": []
-        },
-        {
-            "os": "debian",
-            "name": "victim1",
-            "id": 124,
-            "type": "victim",
-            "shared_folders": [],
-            "network_settings": [],
-            "provisions": []
-        },
-        {
-            "os": "debian",
-            "name": "victim2",
-            "id": 125,
-            "type": "victim",
-            "shared_folders": [],
-            "network_settings": [],
-            "provisions": []
-        },
-        {
-            "os": "debian",
-            "name": "victim3",
-            "id": 126,
-            "type": "victim",
-            "shared_folders": [],
-            "network_settings": [],
-            "provisions": []
-        },
-        {
-            "os": "debian",
-            "name": "victim4",
-            "id": 127,
-            "type": "victim",
-            "shared_folders": [],
-            "network_settings": [],
-            "provisions": []
-        }
-    ],
-    "network_settings" : {
-            "network_type" : "type", 
-            "network_name" : "Name", 
-            "auto_config" : "True"
-        }
-    }'''
+#     sample_scenario = '''{
+#     "scenario_name" : "name", 
+#     "id" : 123, 
+#     "creation_date" : "string", 
+#     "last_accessed" : "string", 
+#     "exploit_info": {
+#             "name": "Name", 
+#             "download_link": "link", 
+#             "type": "type"
+#         }, 
+#     "vulnerability_info": {
+#             "name": "Name", 
+#             "cve_link": "url", 
+#             "download_link": "link", 
+#             "type": "type"
+#         }, 
+#     "machines": [],
+#     "network_settings" : {
+#             "network_type" : "type", 
+#             "network_name" : "Name", 
+#             "auto_config" : "True"
+#         }
+#     }'''
 
-    testScenario = BHScenario()
-    JSONScenario = json.loads(sample_scenario)
-    testScenario.fromJSON(JSONScenario)
+#     testScenario = BHScenario()
+#     JSONScenario = json.loads(sample_scenario)
+#     testScenario.fromJSON(JSONScenario)
     
-    app = QApplication(sys.argv)
-    window = MachineListDialog(testScenario)
-    window.show()
-    sys.exit(app.exec_())
+#     app = QApplication(sys.argv)
+#     window = MachineListDialog(testScenario)
+#     window.show()
+#     sys.exit(app.exec_())
