@@ -1,4 +1,5 @@
 import json
+import copy
 from Screens.DataHandler.BHMachine import BHMachine
 
 from  Screens.DataHandler.BHDataDefaults import *
@@ -119,7 +120,15 @@ class BHScenario(object):
 
     #returns a JSON string representation of this object
     def toJSON(self):
-        return self.scenarioJSON
+        completeJSON = copy.deepcopy(self.scenarioJSON)
+
+        # Add machines
+        for victim in self.getVictimMachines:
+            completeJSON["machines"][victim.getName()] = victim.toJSON()
+        for pov in self.getPOVMachines:
+            completeJSON["machines"][pov.getName()] = pov.toJSON()
+
+        return completeJSON
 
     #receives a list of machine dictionaries and returns a list of objects with the POV machines
     def getPOVObjsFromDict(self, machineJSONArray):

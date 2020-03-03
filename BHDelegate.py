@@ -86,6 +86,8 @@ class BHDelegate(QMainWindow):
         self.scenarios.addScenario(self.newScenario)
 
         # Save to backend
+        # First save scenario declaration on widow
+        # If response ok, save actual scenario
         if self.scenarios.saveScenarioDeclaration(self.newScenario):
             self.scenarios.saveScenario(self.newScenario)
 

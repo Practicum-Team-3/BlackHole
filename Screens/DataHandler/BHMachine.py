@@ -107,7 +107,7 @@ class BHMachine(object):
 
     #returns a JSON string version of this object
     def toJSON(self):
-        pass
+        return self.machineJSON
 
     ### getter and setter for machine settings
     def getBaseMemory(self):
