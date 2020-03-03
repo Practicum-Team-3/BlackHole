@@ -5,6 +5,7 @@ class BHScenario(object):
     def __init__(self, scenarioJSON=''):
         self.scenario_name = ''
         self.id = ''
+        self.description = ""
         self.creation_date = ''
         self.last_accessed = ''
         self.exploit_info = None
@@ -19,6 +20,20 @@ class BHScenario(object):
     def setName(self, newName):
         self.scenario_name = newName
 
+    def getName(self):
+        return self.scenario_name
+
+    def setId(self, id):
+        self.id = id
+
+    def getId(self):
+        return self.id
+
+    def setDescription(self, description):
+        self.description = description
+
+    def getDescription(self):
+        return self.description
 
     #returns the list of POV machines
     def getPOVMachines(self):

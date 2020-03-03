@@ -3,7 +3,14 @@ import json
 
 class BHScenarios(object):
     def __init__(self):
-        self.scenarios = {"key":"scenario"}
+
+        self.scenarioList = ["123", "124", "125", "126"]
+        self.scenarios = {
+            "123": "Nice scenario",
+            "124": "Cool scenario",
+            "125": "Excelent scenario",
+            "126": "Bad scenario"
+        }
 
 
         self.testScenario = '''{
@@ -158,8 +165,39 @@ class BHScenarios(object):
     def addScenario(self, scenario):
         pass
 
+
+    # Returns list of scenario ids
+    def getScenarioIdList(self):
+        return self.scenarioList
+
+    def getScenarioById(self, id):
+        testScenarioObject = BHScenario()
+
+        scenarioJSONObject = json.loads(self.testScenario)
+        testScenarioObject.fromJSON(scenarioJSONObject)
+
+        testScenarioObject.setId(id)
+        testScenarioObject.setName(self.scenarios[id])
+        testScenarioObject.setDescription("default description")
+
+        return testScenarioObject
+
+    def getScenarios(self):
+        scenariosComp = []
+
+        for scenarioId in self.getScenarioIdList():
+            scenariosComp.append(self.getScenarioById(scenarioId))
+        return scenariosComp
+
+    def removeScenarioById(self, id):
+        self.scenarioList.remove(id)
+        self.scenarios.pop(id)
+
     def getScenario(self):
         testScenarioObject = BHScenario()
         scenarioJSONObject = json.loads(self.testScenario)
         testScenarioObject.fromJSON(scenarioJSONObject)
         return testScenarioObject
+
+    def getFromBackend(self, ip, port):
+        pass

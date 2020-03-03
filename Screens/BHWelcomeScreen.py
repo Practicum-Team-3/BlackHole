@@ -5,16 +5,20 @@
 from PySide2 import QtWidgets
 from PySide2.QtCore import Slot, QDate, Signal
 from PySide2.QtWidgets import QDialog
-
+from Screens.DataHandler.BHScenarios import BHScenarios
 
 from Screens.Interfaces.ui_welcomeScreen import Ui_WelcomeScreen
 
 
 class BHWelcomeScreen(QDialog):
 
+    # Available signals
     newScenarioRequested = Signal()
+    openScenarioRequested = Signal(str)
+    editScenarioRequested = Signal(str)
 
-    def __init__(self):
+
+    def __init__(self, scenarios):
         super(BHWelcomeScreen, self).__init__()
 
 
@@ -26,8 +30,26 @@ class BHWelcomeScreen(QDialog):
         # Call setupUi to generate interface
         self.ui.setupUi(self)
 
+        # traverse through the scenarios
+        for scenario in scenarios.getScenarios():
+            # get information from the scenario and print it
+            print(scenario.getName())
+            print(scenario.getId())
+            print(scenario.getDescription())
+
+        # >>>remove a scenario from the scenarios object like this:
+        # scenarios.deleteScenarioById()
+        # >remember to pass the id
+
+
+        # Add listeners (slots) to UI events (signals)
         self.ui.btnNew.clicked.connect(self.newScenarioButtonClicked)
+
+
 
     @Slot()
     def newScenarioButtonClicked(self):
+        # Generate event so subscribed objects can be notified
         self.newScenarioRequested.emit()
+
+        # >>Other event (signal) declarations are on line 15

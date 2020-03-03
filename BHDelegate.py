@@ -35,7 +35,7 @@ class BHDelegate(QMainWindow):
         # self.welcomeWindow.createScenarioAction.connect(self.createNewScenario)
         # self.welcomeWindow.show()
 
-        self.welcomeScreen = BHWelcomeScreen()
+        self.welcomeScreen = BHWelcomeScreen(self.testScenarios)
         self.welcomeScreen.newScenarioRequested.connect(self.createNewScenario)
         self.welcomeScreen.show()
 
