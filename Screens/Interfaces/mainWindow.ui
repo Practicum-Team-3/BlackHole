@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>AutoBug</string>
+   <string>BlackHole</string>
   </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>
@@ -57,7 +57,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>-1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideRight</enum>
@@ -71,25 +71,6 @@
       <property name="movable">
        <bool>true</bool>
       </property>
-      <widget class="QWidget" name="defaultTab">
-       <attribute name="title">
-        <string>Default</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayoutTab">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
-       </layout>
-      </widget>
      </widget>
     </item>
    </layout>
@@ -103,11 +84,11 @@
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuWoko">
+   <widget class="QMenu" name="menuScenario">
     <property name="title">
      <string>Scenario</string>
     </property>
-    <addaction name="actionFile"/>
+    <addaction name="actionNewScenario"/>
     <addaction name="actionImport"/>
     <addaction name="actionClose"/>
    </widget>
@@ -117,7 +98,7 @@
     </property>
     <addaction name="actionWhatIsThis"/>
    </widget>
-   <addaction name="menuWoko"/>
+   <addaction name="menuScenario"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="toolBar">
@@ -133,7 +114,8 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="separator"/>
+   <addaction name="actionNewScenario"/>
+   <addaction name="actionRun"/>
   </widget>
   <action name="actionFile">
    <property name="text">
@@ -153,6 +135,25 @@
   <action name="actionWhatIsThis">
    <property name="text">
     <string>What Is This?</string>
+   </property>
+  </action>
+  <action name="actionRun">
+   <property name="text">
+    <string>Run Scenario</string>
+   </property>
+   <property name="toolTip">
+    <string>Run</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionNewScenario">
+   <property name="text">
+    <string>New</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
  </widget>

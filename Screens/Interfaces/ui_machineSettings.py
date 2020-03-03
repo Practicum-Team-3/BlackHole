@@ -20,7 +20,8 @@ class Ui_MachineSettings(object):
     def setupUi(self, MachineSettings):
         if MachineSettings.objectName():
             MachineSettings.setObjectName(u"MachineSettings")
-        MachineSettings.resize(400, 594)
+        MachineSettings.resize(400, 604)
+        MachineSettings.setModal(True)
         self.gridLayout_2 = QGridLayout(MachineSettings)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.groupBox_Processor = QGroupBox(MachineSettings)

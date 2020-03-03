@@ -204,26 +204,28 @@ class MachineListDialog(QDialog):
         groupBox.setLayout(verticalLayout)
         return groupBox
 
-
+    @Slot()
     def onCreateVMButtonClicked(self):
+        # Create new machine
         self.placeholderMachine = BHMachine()
         #TODO
-        machineEditWindow = BHMachineEditDialog(self.placeholderMachine)
-        machineEditWindow.saveSignal.connect(self.createVM)
+        self.machineEditWindow = BHMachineEditDialog(self.placeholderMachine)
+        self.machineEditWindow.saveSignal.connect(self.createVM)
+        self.machineEditWindow.show()
         
 
     @Slot()
     def createVM(self):
         self.scenario.addMachine(self.placeholderMachine)
-        if self.placeholderMachine.isVictim():
+        if self.placeholderMachine.getIsVictim():
             self.updateVictims()
         else:
             self.updatePOVs()
 
     @Slot()
     def replaceMachine(self):
-        self.scenario.replaceMachine(self.placeholderMachine.getMachineID(), self.placeholderMachine, self.placeholderMachine.isVictim())
-        if self.placeholderMachine.isVictim():
+        self.scenario.replaceMachine(self.placeholderMachine.getMachineID(), self.placeholderMachine, self.placeholderMachine.getIsVictim())
+        if self.placeholderMachine.getIsVictim():
             self.updateVictims()
         else:
             self.updatePOVs()
@@ -311,7 +313,7 @@ class MachineListDialog(QDialog):
 
         @Slot()
         def onDeleteVM(self):
-            if self.machine.isVictim():
+            if self.machine.getIsVictim():
                 self.parent.scenario.deleteVictimMachine(self.machine.getMachineID())
                 self.parent.updateVictims()
             else:

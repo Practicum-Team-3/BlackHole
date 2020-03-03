@@ -18,10 +18,12 @@ class BHDelegate(QMainWindow):
         # Main setu
 
         # 1 
-        self.testScenarios = BHScenarios()
+        self.scenarios = BHScenarios("http://127.0.0.1:5000")
+        self.scenarios.loadScenarioList()
+        self.scenarios.loadAllScenarios()
 
         # Instantiate main window
-        self.window = BHMainWindow(self.testScenarios)
+        self.window = BHMainWindow()
         self.welcomeScreen = None
         self.newScenarioWindow = None
         self.machineListWindow = None
@@ -35,8 +37,9 @@ class BHDelegate(QMainWindow):
         # self.welcomeWindow.createScenarioAction.connect(self.createNewScenario)
         # self.welcomeWindow.show()
 
-        self.welcomeScreen = BHWelcomeScreen(self.testScenarios)
+        self.welcomeScreen = BHWelcomeScreen(self.scenarios)
         self.welcomeScreen.newScenarioRequested.connect(self.createNewScenario)
+        self.welcomeScreen.openScenarioRequested.connect(self.openScenarioByName)
         self.welcomeScreen.show()
 
 
@@ -47,8 +50,7 @@ class BHDelegate(QMainWindow):
 
         self.welcomeScreen.hide()
 
-        # TODO: Change to a new instance of BHScenarios
-        self.newScenario = self.testScenarios.getScenario()
+        self.newScenario = BHScenario()
 
 
         # move to function called when 
@@ -59,27 +61,38 @@ class BHDelegate(QMainWindow):
 
         self.newScenarioWindow.show()
 
+    @Slot()
+    def openScenarioByName(self, scenarioName):
+
+        self.window.openScenario(self.scenarios.getScenarioByName(scenarioName))
+        self.window.show()
 
 
     @Slot()
     def showMachineList(self):
 
-        self.testScenarios.addScenario(self.newScenario)
+        self.scenarios.addScenario(self.newScenario)
 
         self.machineListWindow = MachineListDialog(self.newScenario)
         #machine list will call create/edit window
         #self.machineListWindow.onCreateVM.connect(createVM)
-        self.machineListWindow.ui.buttonBox.accepted.connect(self.showMainWindow)
+        self.machineListWindow.ui.buttonBox.accepted.connect(self.finalizeScenarioCreation)
 
         self.machineListWindow.show()
 
     @Slot()
-    def showMainWindow(self):
+    def finalizeScenarioCreation(self):
+        # Finally add the new scenario
+        self.scenarios.addScenario(self.newScenario)
 
-        self.machineListWindow.hide()
+        # Save to backend
+        if self.scenarios.saveScenarioDeclaration(self.newScenario):
+            self.scenarios.saveScenario(self.newScenario)
 
-        self.window.update()
-        self.window.show()
+            self.machineListWindow.hide()
+            self.window.openScenario(self.newScenario)
+            self.window.show()
+
 
 
 if __name__ == "__main__":

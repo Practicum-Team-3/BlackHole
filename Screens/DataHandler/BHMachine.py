@@ -1,11 +1,12 @@
 import json
+from Screens.DataHandler.BHDataDefaults import *
 
 class BHMachine(object):
-    def __init__(self, machineJSON=''):
-        self.name = ''
-        self.id = -1
-        self.os = ''
-        self.type = ''
+    def __init__(self, machineJSON = None):
+#        self.name = ''
+        #self.id = -1
+        #self.os = 'windows'
+        #self.isVictim = False
         self.shared_folders = None #should be list
         self.network_settings = None #should be dictionary
         self.provisions = None #should be list
@@ -28,56 +29,80 @@ class BHMachine(object):
         self.hdVirt_enableVTx = False
         self.hdVirt_enableNestedPaging = False
         ### end machine settings window attributes
+        self.machineJSON = {}
 
-        if machineJSON != '':
+        if machineJSON == None:
+            self.fromJSON(json.loads(NEWMACHINE))
+        else:
             self.fromJSON(machineJSON)
 
     #returns a dictionary containing some of the important information fields of this machine
     def getFieldsToShow(self):
-        fields = {"name": str(self.name), "os": str(self.os)}
+        fields = {"name": str(self.getName()), "os": str(self.getOS())}
         return fields
 
+# === NAME
+    def getName(self):
+        return self.machineJSON["name"]
+
+    def setName(self, name):
+        self.machineJSON["name"] = name
+# === OS
     def getOS(self):
-        return str(self.os)
+        return self.machineJSON["os"]
 
-    def isVictim(self):
-        return self.type == 'victim'
+    def setOS(self, os):
+        self.machineJSON["os"] = os
 
+# === IS VICTIM
+    def getIsVictim(self):
+        print("Got is attacker")
+        print(self.machineJSON["is_attacker"])
+        return not self.machineJSON["is_attacker"]
+
+    def setIsVictim(self, isVictim):
+        self.machineJSON["is_attacker"] = (not isVictim)
+        print("Remained is attacker")
+        print(self.machineJSON["is_attacker"])
+
+# === ID (not supported)
     #gets the id of this machine
     def getMachineID(self):
-        return self.id
+        return 0
 
     #sets the id of this machine
     def setMachineID(self, id):
-        self.machineID = id
-
+        pass
+# ====
     #populates fields of this object from a JSON string
     def fromJSON(self, jsonObject):
-        self.name = jsonObject['name']
-        self.id = jsonObject['id']
-        self.os = jsonObject['os']
-        self.type = jsonObject['type']
+        self.machineJSON = jsonObject
+
+#        self.name = jsonObject['name']
+#        self.id = jsonObject['id']
+#        self.os = jsonObject['os']
+        self.isVictim = jsonObject['is_attacker']
 
         ### machine settings window fields
-        self.baseMemory = jsonObject['baseMemory']
-        self.bootOrder_hardDisk = jsonObject['bootOrder_hardDisk']
-        self.bootOrder_optical = jsonObject['bootOrder_optical']
-        self.bootOrder_floppy = jsonObject['bootOrder_floppy']
-        self.bootOrder_network = jsonObject['bootOrder_network']
-        self.chipset = jsonObject['chipset']
-        self.pointingDevice = jsonObject['pointingDevice']
-        self.extFeat_enableIO = jsonObject['extFeat_enableIO']
-        self.extFeat_enableEFI = jsonObject['extFeat_enableEFI']
-        self.extFeat_hwClockUTCtime = jsonObject['extFeat_hwClockUTCtime']
-        self.processors = jsonObject['processors']
-        self.exeCap = jsonObject['exeCap']
-        self.extFeat_enablePAE_NX = jsonObject['extFeat_EnablePAE_NX']
-        self.paravirtInterface = jsonObject['paravirtInterface']
-        self.hdVirt_enableVTx = jsonObject['hdVirt_enableVTx']
-        self.hdVirt_enableNestedPaging = jsonObject['hdVirt_enableNestedPaging']
-        self.shared_folders = BHSharedFolders(jsonObject['shared_folders'])
-        self.network_settings = BHNetworkSettings(jsonObject['network_settings'])
-        self.provisions = BHProvisions(jsonObject['provisions'])
+#        self.baseMemory = jsonObject['baseMemory']
+#        self.bootOrder_hardDisk = jsonObject['bootOrder_hardDisk']
+#        self.bootOrder_optical = jsonObject['bootOrder_optical']
+#        self.bootOrder_floppy = jsonObject['bootOrder_floppy']
+#        self.bootOrder_network = jsonObject['bootOrder_network']
+#        self.chipset = jsonObject['chipset']
+#        self.pointingDevice = jsonObject['pointingDevice']
+#        self.extFeat_enableIO = jsonObject['extFeat_enableIO']
+#        self.extFeat_enableEFI = jsonObject['extFeat_enableEFI']
+#        self.extFeat_hwClockUTCtime = jsonObject['extFeat_hwClockUTCtime']
+#        self.processors = jsonObject['processors']
+#        self.exeCap = jsonObject['exeCap']
+#        self.extFeat_enablePAE_NX = jsonObject['extFeat_EnablePAE_NX']
+#        self.paravirtInterface = jsonObject['paravirtInterface']
+#        self.hdVirt_enableVTx = jsonObject['hdVirt_enableVTx']
+#        self.hdVirt_enableNestedPaging = jsonObject['hdVirt_enableNestedPaging']
+#        self.shared_folders = BHSharedFolders(jsonObject['shared_folders'])
+#        self.network_settings = BHNetworkSettings(jsonObject['network_settings'])
+#        self.provisions = BHProvisions(jsonObject['provisions'])
         ### end machine settings window fields
 
     #returns a JSON string version of this object
